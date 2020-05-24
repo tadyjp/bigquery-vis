@@ -8,7 +8,7 @@ const (
 
 	// Identifiers + literals
 	IDENT  = "IDENT"  // add, foobar, x, y, ...
-	INT    = "INT"    // 1343456
+	UINT   = "UINT"   // 123
 	NUMBER = "NUMBER" // 1.2
 	STRING = "STRING"
 
@@ -31,10 +31,15 @@ const (
 	SEMICOLON = ";"
 	PERIOD    = "."
 
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
+	// Brackets
+	LPAREN  = "("
+	RPAREN  = ")"
+	LBRACE  = "{"
+	RBRACE  = "}"
+	LSQUARE = "["
+	RSQUARE = "]"
+	LANGLE  = "<"
+	RANGLE  = ">"
 
 	// Keywords
 	SELECT = "SELECT"

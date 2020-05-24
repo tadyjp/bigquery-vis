@@ -153,9 +153,25 @@ Loop:
 			l.nextRuneCount(3)
 			return lexString(`"""`)
 		}
+		if l.hasPrefix(`'''`) {
+			l.nextRuneCount(3)
+			return lexString(`'''`)
+		}
+		// TODO: Raw string
 
 		r := l.peek()
 		switch r {
+		// Operators
+		case '*':
+			l.next()
+			l.emit(token.ASTERISK)
+			continue
+
+		// Delimiters
+		case ',':
+			l.next()
+			l.emit(token.COMMA)
+			continue
 		case ';':
 			l.next()
 			l.emit(token.SEMICOLON)
@@ -164,9 +180,39 @@ Loop:
 			l.next()
 			l.emit(token.PERIOD)
 			continue
-		case '*':
+
+		// Brackets
+		case '(':
 			l.next()
-			l.emit(token.ASTERISK)
+			l.emit(token.LPAREN)
+			continue
+		case ')':
+			l.next()
+			l.emit(token.RPAREN)
+			continue
+		case '{':
+			l.next()
+			l.emit(token.LBRACE)
+			continue
+		case '}':
+			l.next()
+			l.emit(token.RBRACE)
+			continue
+		case '[':
+			l.next()
+			l.emit(token.LSQUARE)
+			continue
+		case ']':
+			l.next()
+			l.emit(token.RSQUARE)
+			continue
+		case '<':
+			l.next()
+			l.emit(token.LANGLE)
+			continue
+		case '>':
+			l.next()
+			l.emit(token.RANGLE)
 			continue
 		case '"':
 			l.skip()
@@ -240,6 +286,7 @@ func lexString(quote string) func(*Lexer) stateFn {
 
 			r := l.next()
 			if r == '\\' {
+				// TODO: escape sequence
 				if l.accept(`"\/bfnrt`) {
 					// break
 					// do nothing
@@ -281,23 +328,31 @@ func lexQuotedIdentifier(l *Lexer) stateFn {
 }
 
 func lexNumber(l *Lexer) stateFn {
-	l.accept("-")
+	is_uint := true
+
+	is_uint = is_uint && !l.accept("-")
 	if l.accept(digit1To9) {
 		l.acceptRun(digit)
 	} else if !l.accept("0") {
 		return l.errorf("bad digit for number")
 	}
 	if l.accept(".") {
+		is_uint = false
 		l.acceptRun(digit)
 	}
 	if l.accept("eE") {
+		is_uint = false
 		l.accept("+-")
 		if !l.accept(digit) {
 			return l.errorf("digit expected for number exponent")
 		}
 		l.acceptRun(digit)
 	}
-	l.emit(token.NUMBER)
+	if is_uint {
+		l.emit(token.UINT)
+	} else {
+		l.emit(token.NUMBER)
+	}
 	return lexText
 }
 

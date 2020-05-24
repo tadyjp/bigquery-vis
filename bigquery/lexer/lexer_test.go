@@ -18,67 +18,89 @@ type lexTest struct {
 var tEOF = token.Token{Type: token.EOF, Literal: ""}
 
 var lexTests = []lexTest{
-	{"empty", "", []token.Token{tEOF}},
-	{"identifiers", "Customers5", []token.Token{
-		{Type: token.IDENT, Literal: "Customers5"}, tEOF}},
-	{"identifiers", "_dataField1", []token.Token{
-		{Type: token.IDENT, Literal: "_dataField1"}, tEOF}},
-	{"identifiers", "`tableName~`", []token.Token{
-		{Type: token.IDENT, Literal: "tableName~"}, tEOF}},
-	{"identifiers", "foo.`GROUP`", []token.Token{
-		{Type: token.IDENT, Literal: "foo"},
-		{Type: token.PERIOD, Literal: "."},
-		{Type: token.IDENT, Literal: "GROUP"},
+	// {"empty", "", []token.Token{tEOF}},
+	// {"identifiers", "Customers5", []token.Token{
+	// 	{Type: token.IDENT, Literal: "Customers5"}, tEOF}},
+	// {"identifiers", "_dataField1", []token.Token{
+	// 	{Type: token.IDENT, Literal: "_dataField1"}, tEOF}},
+	// {"identifiers", "`tableName~`", []token.Token{
+	// 	{Type: token.IDENT, Literal: "tableName~"}, tEOF}},
+	// {"identifiers", "foo.`GROUP`", []token.Token{
+	// 	{Type: token.IDENT, Literal: "foo"},
+	// 	{Type: token.PERIOD, Literal: "."},
+	// 	{Type: token.IDENT, Literal: "GROUP"},
+	// 	tEOF,
+	// }},
+	// {"string", `"abc"`, []token.Token{
+	// 	{Type: token.STRING, Literal: "abc"},
+	// 	tEOF,
+	// }},
+	// {"string", `"it's"`, []token.Token{
+	// 	{Type: token.STRING, Literal: "it's"},
+	// 	tEOF,
+	// }},
+	// {"string", `'it\'s'`, []token.Token{
+	// 	{Type: token.STRING, Literal: "it's"},
+	// 	tEOF,
+	// }},
+	// {"string", `'Title: "Boy"'`, []token.Token{
+	// 	{Type: token.STRING, Literal: `Title: "Boy"`},
+	// 	tEOF,
+	// }},
+	// {"string", `"""abc"""`, []token.Token{
+	// 	{Type: token.STRING, Literal: `abc`},
+	// 	tEOF,
+	// }},
+	// {"string", `'''it's'''`, []token.Token{
+	// 	{Type: token.STRING, Literal: `it's`},
+	// 	tEOF,
+	// }},
+	// {"identifiers", "foo.`GROUP`", []token.Token{
+	// 	{Type: token.IDENT, Literal: "foo"},
+	// 	{Type: token.PERIOD, Literal: "."},
+	// 	{Type: token.IDENT, Literal: "GROUP"},
+	// 	tEOF,
+	// }},
+	// {"identifiers", "foo.GROUP", []token.Token{
+	// 	{Type: token.IDENT, Literal: "foo"},
+	// 	{Type: token.PERIOD, Literal: "."},
+	// 	{Type: token.IDENT, Literal: "GROUP"},
+	// 	tEOF,
+	// }},
+	// {"statement", "SELECT * FROM table", []token.Token{
+	// 	{Type: token.SELECT, Literal: "SELECT"},
+	// 	{Type: token.ASTERISK, Literal: "*"},
+	// 	{Type: token.FROM, Literal: "FROM"},
+	// 	{Type: token.IDENT, Literal: "table"},
+	// 	tEOF,
+	// }},
+	// {"statement", "select * from table", []token.Token{
+	// 	{Type: token.SELECT, Literal: "select"},
+	// 	{Type: token.ASTERISK, Literal: "*"},
+	// 	{Type: token.FROM, Literal: "from"},
+	// 	{Type: token.IDENT, Literal: "table"},
+	// 	tEOF,
+	// }},
+	// {"statement", "SELECT * FROM table;", []token.Token{
+	// 	{Type: token.SELECT, Literal: "SELECT"},
+	// 	{Type: token.ASTERISK, Literal: "*"},
+	// 	{Type: token.FROM, Literal: "FROM"},
+	// 	{Type: token.IDENT, Literal: "table"},
+	// 	{Type: token.SEMICOLON, Literal: ";"},
+	// 	tEOF,
+	// }},
+	{"number", "123", []token.Token{
+		{Type: token.UINT, Literal: "123"},
 		tEOF,
 	}},
-	{"string", `"abc"`, []token.Token{
-		{Type: token.STRING, Literal: "abc"},
-		tEOF,
-	}},
-	{"string", `"it's"`, []token.Token{
-		{Type: token.STRING, Literal: "it's"},
-		tEOF,
-	}},
-	{"string", `'it\'s'`, []token.Token{
-		{Type: token.STRING, Literal: "it's"},
-		tEOF,
-	}},
-	{"string", `'Title: "Boy"'`, []token.Token{
-		{Type: token.STRING, Literal: `Title: "Boy"`},
-		tEOF,
-	}},
-	{"identifiers", "foo.`GROUP`", []token.Token{
-		{Type: token.IDENT, Literal: "foo"},
-		{Type: token.PERIOD, Literal: "."},
-		{Type: token.IDENT, Literal: "GROUP"},
-		tEOF,
-	}},
-	{"identifiers", "foo.GROUP", []token.Token{
-		{Type: token.IDENT, Literal: "foo"},
-		{Type: token.PERIOD, Literal: "."},
-		{Type: token.IDENT, Literal: "GROUP"},
-		tEOF,
-	}},
-	{"statement", "SELECT * FROM table", []token.Token{
-		{Type: token.SELECT, Literal: "SELECT"},
-		{Type: token.ASTERISK, Literal: "*"},
-		{Type: token.FROM, Literal: "FROM"},
-		{Type: token.IDENT, Literal: "table"},
-		tEOF,
-	}},
-	{"statement", "select * from table", []token.Token{
-		{Type: token.SELECT, Literal: "select"},
-		{Type: token.ASTERISK, Literal: "*"},
-		{Type: token.FROM, Literal: "from"},
-		{Type: token.IDENT, Literal: "table"},
-		tEOF,
-	}},
-	{"statement", "SELECT * FROM table;", []token.Token{
-		{Type: token.SELECT, Literal: "SELECT"},
-		{Type: token.ASTERISK, Literal: "*"},
-		{Type: token.FROM, Literal: "FROM"},
-		{Type: token.IDENT, Literal: "table"},
-		{Type: token.SEMICOLON, Literal: ";"},
+	{"array", "[1, 2, 3]", []token.Token{
+		{Type: token.LSQUARE, Literal: "["},
+		{Type: token.UINT, Literal: "1"},
+		{Type: token.COMMA, Literal: ","},
+		{Type: token.UINT, Literal: "2"},
+		{Type: token.COMMA, Literal: ","},
+		{Type: token.UINT, Literal: "3"},
+		{Type: token.RSQUARE, Literal: "]"},
 		tEOF,
 	}},
 }
