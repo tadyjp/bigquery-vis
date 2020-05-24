@@ -7,10 +7,10 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers + literals
-	IDENT  = "IDENT"  // add, foobar, x, y, ...
-	UINT   = "UINT"   // 123
-	NUMBER = "NUMBER" // 1.2
-	STRING = "STRING"
+	IDENT          = "IDENT"  // add, foobar, x, y, ...
+	UINT           = "UINT"   // 123
+	NUMBER         = "NUMBER" // 1.2
+	STRING_LITERAL = "STRING LITERAL"
 
 	// Operators
 	ASSIGN   = "="
@@ -47,9 +47,13 @@ const (
 	TRUE   = "TRUE"
 	FALSE  = "FALSE"
 	NULL   = "NULL"
+	ARRAY  = "ARRAY"
 	IF     = "IF"
 	ELSE   = "ELSE"
 	RETURN = "RETURN"
+
+	// Types
+	STRING = "STRING"
 )
 
 type Token struct {
@@ -66,6 +70,8 @@ var keywords = map[string]TokenType{
 	"true":   TRUE,
 	"false":  FALSE,
 	"null":   NULL,
+	"array":  ARRAY,
+	"string": STRING,
 }
 
 func LookupIdent(ident string) TokenType {

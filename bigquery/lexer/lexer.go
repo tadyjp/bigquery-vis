@@ -300,7 +300,7 @@ func lexString(quote string) func(*Lexer) stateFn {
 					return l.errorf("unsupported escape character")
 				}
 			} else if l.hasPrefix(quote) { // finish on end quote
-				l.emit(token.STRING)
+				l.emit(token.STRING_LITERAL)
 				l.nextRuneCount(utf8.RuneCountInString(quote))
 				return lexText
 			} else if unicode.IsControl(r) {
